@@ -19,6 +19,13 @@ class Search extends React.Component {
             this.setState({ result : 'error', data : data.error })
           
           } else {
+            data = data.map((book) => {
+              const bookInShelf = this.props.books.find(b => b.id === book.id);
+              if (bookInShelf) {
+                  book.shelf = bookInShelf.shelf;
+              }
+              return book;
+          });
             this.setState({ result : 'full data', data })
             console.log(data);
           }
@@ -30,7 +37,7 @@ class Search extends React.Component {
   }
 
   render() {
-    const {result, data} = this.state
+    const {result, data} = this.state;
     return (
       <div className="search-books">
         <div className="search-books-bar">

@@ -11,22 +11,24 @@ class BooksApp extends React.Component {
     books: []
   }
   
-  componentDidMount() {
-    BooksAPI.getAll().then((books) => {
+  async componentDidMount() {
+    const books = await BooksAPI.getAll();
       this.setState({ books })
-    })
   }
   
   updateShelf = (book, shelf) => {
     book.shelf = shelf
-    console.log(this.state.books)
-    if(this.state.books.indexOf(book) < 0) {
-      this.state.books.push(book)
+    if(this.state.books.indexOf(book) < 0){
+      this.setState((prevState, props) => {
+        return {
+          books: prevState.books.concat(book)
+        }
+      })
     }
     BooksAPI.update(book, shelf).then(
       this.setState((prevState, props) => {
         return {
-          books: prevState.books.map((e) => e.id === book.id ? book : e)
+          books: prevState.books.filter((b) => b.id === book.id ? book : b)
         }
       })
     )

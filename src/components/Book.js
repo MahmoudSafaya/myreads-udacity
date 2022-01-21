@@ -9,7 +9,9 @@ const Book = ({book, updateShelf}) => {
     <li key={id}>
       <div className="book">
         <div className="book-top">
+          {imageLinks && 
           <div className="book-cover" style={{ width: 128, height: 193, backgroundImage: `url(${imageLinks.thumbnail})` }}></div>
+          }
           <div className="book-shelf-changer">
             {id && (
               <select onChange={e => updateShelf(book, e.target.value)} defaultValue={shelf}>

@@ -13,6 +13,6 @@ const Shelf = ({books, updateShelf}) => {
       </ol>
     </div>
   )
-};
+}
 
 export default Shelf;
