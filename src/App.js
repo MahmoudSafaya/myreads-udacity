@@ -16,23 +16,25 @@ class BooksApp extends React.Component {
       this.setState({ books })
   }
   
-  updateShelf = (book, shelf) => {
-    book.shelf = shelf
-    if(this.state.books.indexOf(book) < 0){
-      this.setState((prevState, props) => {
-        return {
-          books: prevState.books.concat(book)
+  updateShelf = (updatedBook, shelf) => {
+    BooksAPI.update(updatedBook, shelf).then(res => {
+      this.setState(state => {
+        let currentBooks = [];
+        if (state.books.find(book => book.id === updatedBook.id)) {
+          currentBooks = state.books.map(book => {
+            if (book.id === updatedBook.id) {
+              book.shelf = shelf;
+            }
+            return book;
+          })
+        } else {
+          updatedBook.shelf = shelf;
+          currentBooks = state.books.concat([updatedBook]);
         }
+        return {books: currentBooks};
       })
-    }
-    BooksAPI.update(book, shelf).then(
-      this.setState((prevState, props) => {
-        return {
-          books: prevState.books.filter((b) => b.id === book.id ? book : b)
-        }
-      })
-    )
-  }
+    })
+  };
 
   render() {
     return (
